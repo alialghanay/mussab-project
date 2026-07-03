@@ -18,7 +18,10 @@ public class InteractionController : MonoBehaviour
     {
         FindTarget();
 
-        if (currentTarget != null && currentTarget.isActiveAndEnabled && Keyboard.current.eKey.wasPressedThisFrame)
+        var kb = Keyboard.current;
+        if (kb == null) return;
+
+        if (currentTarget != null && currentTarget.isActiveAndEnabled && kb.eKey.wasPressedThisFrame)
             currentTarget.Interact(gameObject);
     }
 
