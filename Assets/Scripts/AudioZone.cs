@@ -48,6 +48,7 @@ public class AudioZone : MonoBehaviour
         if (duration <= 0f)
         {
             ambienceSource.volume = target;
+            activeFade = null;
             yield break;
         }
 
