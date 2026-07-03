@@ -37,6 +37,7 @@ public class PhoneController : MonoBehaviour
 
     public void ShowMessage(string text)
     {
+        // TODO Phase 2: assign text to a UI Text/TMP_Text element.
         Debug.Log("[Phone] " + text);
         if (phoneScreen != null)
             phoneScreen.SetActive(true);
@@ -52,7 +53,7 @@ public class PhoneController : MonoBehaviour
             quranSource.Play();
     }
 
-    public void Vibrate(float durationSeconds = 0.3f)
+    public void Vibrate()
     {
         #if UNITY_ANDROID || UNITY_IOS
         Handheld.Vibrate();
