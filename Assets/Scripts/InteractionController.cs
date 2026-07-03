@@ -3,13 +3,13 @@ using UnityEngine.InputSystem;
 
 public class InteractionController : MonoBehaviour
 {
-    public float reach = 2.5f;
+    public float interactionRange = 2.5f;
     public LayerMask interactableLayers;
 
     Camera playerCamera;
     Interactable currentTarget;
 
-    void Start()
+    void Awake()
     {
         playerCamera = Camera.main;
     }
@@ -18,7 +18,7 @@ public class InteractionController : MonoBehaviour
     {
         FindTarget();
 
-        if (currentTarget != null && Keyboard.current.eKey.wasPressedThisFrame)
+        if (currentTarget != null && currentTarget.isActiveAndEnabled && Keyboard.current.eKey.wasPressedThisFrame)
             currentTarget.Interact(gameObject);
     }
 
@@ -27,9 +27,9 @@ public class InteractionController : MonoBehaviour
         if (playerCamera == null) return;
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, reach, interactableLayers))
+        if (Physics.Raycast(ray, out RaycastHit hit, interactionRange, interactableLayers))
         {
-            currentTarget = hit.collider.GetComponent<Interactable>();
+            currentTarget = hit.collider.GetComponentInParent<Interactable>();
         }
         else
         {
