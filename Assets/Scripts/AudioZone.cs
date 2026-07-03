@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Collider))]
 public class AudioZone : MonoBehaviour
@@ -7,6 +8,8 @@ public class AudioZone : MonoBehaviour
     public float fadeInSeconds = 1.5f;
     public float fadeOutSeconds = 1.5f;
     public float targetVolume = 1f;
+
+    Coroutine activeFade;
 
     void Start()
     {
@@ -19,21 +22,34 @@ public class AudioZone : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-        StopAllCoroutines();
-        StartCoroutine(FadeTo(targetVolume, fadeInSeconds));
+        if (!other.CompareTag("Player") || ambienceSource == null) return;
+        StopActiveFade();
+        activeFade = StartCoroutine(FadeTo(targetVolume, fadeInSeconds));
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-        StopAllCoroutines();
-        StartCoroutine(FadeTo(0f, fadeOutSeconds));
+        if (!other.CompareTag("Player") || ambienceSource == null) return;
+        StopActiveFade();
+        activeFade = StartCoroutine(FadeTo(0f, fadeOutSeconds));
     }
 
-    System.Collections.IEnumerator FadeTo(float target, float duration)
+    void StopActiveFade()
     {
-        if (ambienceSource == null) yield break;
+        if (activeFade != null)
+        {
+            StopCoroutine(activeFade);
+            activeFade = null;
+        }
+    }
+
+    IEnumerator FadeTo(float target, float duration)
+    {
+        if (duration <= 0f)
+        {
+            ambienceSource.volume = target;
+            yield break;
+        }
 
         float start = ambienceSource.volume;
         float elapsed = 0f;
@@ -44,5 +60,6 @@ public class AudioZone : MonoBehaviour
             yield return null;
         }
         ambienceSource.volume = target;
+        activeFade = null;
     }
 }
