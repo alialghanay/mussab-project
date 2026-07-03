@@ -315,7 +315,7 @@ public static class NeighborhoodWorldBuilder
         AH_Forecourt(root);
         AH_FloorsAndMasses(root);
         AH_GroundWalls(root);
-        AH_Courtyard(root);
+        PickupInteractable ballPickup = AH_Courtyard(root);
         AH_RoomProps(root);
         AH_Stairs(root);
         AH_UpperLevel(root);
@@ -326,6 +326,7 @@ public static class NeighborhoodWorldBuilder
         encounterGO.transform.SetParent(root.transform, false);
         var director = encounterGO.AddComponent<GameDirector>();
         director.phone = phone;
+        director.targetPickup = ballPickup;
 
         var encounter = encounterGO.AddComponent<EncounterTrigger>();
         director.encounter = encounter;
@@ -503,7 +504,7 @@ public static class NeighborhoodWorldBuilder
         WallNS("Shaft_E", w, 6.5f, -5.8f, -2.8f, 0, HIGH, inn);
     }
 
-    static void AH_Courtyard(GameObject root)
+    static PickupInteractable AH_Courtyard(GameObject root)
     {
         var c = Group("Courtyard", root, Vector3.zero);
         Cylinder("GhostRing", c, new Vector3(-0.5f, 0.09f, 1.2f), 0.9f, 0.015f, MatPaleGhost());
@@ -540,6 +541,7 @@ public static class NeighborhoodWorldBuilder
         DestroyImmediate(ball.GetComponent<SphereCollider>());
         var ballCollider = ball.AddComponent<BoxCollider>();
         ballCollider.size = new Vector3(0.35f, 0.35f, 0.35f);
+        return pickup;
     }
 
     static void AH_RoomProps(GameObject root)
