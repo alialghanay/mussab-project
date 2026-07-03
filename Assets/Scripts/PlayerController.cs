@@ -1,6 +1,6 @@
 // First-person controller for walking the greybox world.
 // New Input System (direct device polling - no action asset required).
-// WASD move, mouse look, Shift sprint, Space jump, F flashlight,
+// WASD move, mouse look, Shift sprint, Space jump, F phone light,
 // Esc releases the cursor, left-click recaptures it.
 
 using UnityEngine;
@@ -20,8 +20,8 @@ public class PlayerController : MonoBehaviour
     public float pitchLimit = 85f;
     public Transform cameraPivot;
 
-    [Header("Flashlight")]
-    public Light flashlight;
+    [Header("Phone")]
+    public PhoneController phone;
 
     CharacterController controller;
     float pitch;
@@ -81,8 +81,8 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
-        if (kb.fKey.wasPressedThisFrame && flashlight != null)
-            flashlight.enabled = !flashlight.enabled;
+        if (kb.fKey.wasPressedThisFrame && phone != null)
+            phone.ToggleLight();
     }
 
     static void LockCursor(bool locked)
