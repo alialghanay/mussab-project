@@ -3,7 +3,7 @@ using System;
 
 public class PickupInteractable : Interactable
 {
-    public static event Action<PickupInteractable> OnPickedUp;
+    public event Action<PickupInteractable> OnPickedUp;
 
     public string itemName = "Item";
 
