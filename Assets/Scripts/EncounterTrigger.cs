@@ -14,10 +14,14 @@ public class EncounterTrigger : MonoBehaviour
 
     public void TriggerEncounter()
     {
+        if (activeEncounter) return;
         if (womanInBlackPrefab == null || spawnPoint == null) return;
 
+        var mainCamera = Camera.main;
+        if (mainCamera == null) return;
+
         spawned = Instantiate(womanInBlackPrefab, spawnPoint.position, spawnPoint.rotation);
-        player = Camera.main.transform;
+        player = mainCamera.transform;
         activeEncounter = true;
         timer = maxDurationSeconds;
 
