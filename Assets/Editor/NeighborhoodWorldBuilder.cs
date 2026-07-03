@@ -310,7 +310,7 @@ public static class NeighborhoodWorldBuilder
 
     static void BuildAbandonedHouse()
     {
-        var root = Group("_AbandonedHouse", null, new Vector3(-6, 0, -69.9f));
+        var root = Group("_AbandonedHouse", null, new Vector3(-5, 0, -69.9f));
         AH_Forecourt(root);
         AH_FloorsAndMasses(root);
         AH_GroundWalls(root);
@@ -336,6 +336,7 @@ public static class NeighborhoodWorldBuilder
         WallNS("CourtWall_E_S", fc, 9.2f, -4.2f, -2.7f, 0, 2.2f, MatRuinRender());
         var gate = Box("Gate_HalfOpen", fc, new Vector3(9.25f, 1.0f, -1.9f), new Vector3(0.08f, 2.0f, 1.15f), MatRust());
         gate.transform.rotation = Quaternion.Euler(0, 35, 0);
+        FixRotatedDoorCollider(gate);
 
         var olive = Group("DeadOlive", fc, new Vector3(8.3f, 0, -3.4f));
         Cylinder("Trunk", olive, new Vector3(0, 0.9f, 0), 0.12f, 1.8f, MatTrunk());
@@ -392,6 +393,7 @@ public static class NeighborhoodWorldBuilder
         WallNS("Facade_DoorLintel", w, 7, -2.7f, -1.6f, 2.1f, HIGH - 2.1f, ext);
         var door = Box("FrontDoor_Broken", w, new Vector3(7.15f, 1.02f, -2.5f), new Vector3(0.07f, 2.04f, 1.0f), MatRust());
         door.transform.rotation = Quaternion.Euler(0, -50, 0);
+        FixRotatedDoorCollider(door);
         WallNS("Ext_W_S", w, -7, -8, -1, 0, HIGH, blk);
         WallNS("Ext_W_N", w, -7, -1, 8, 0, LOW, blk);
         WallEW("Ext_S", w, -7, 7, -8, 0, HIGH, blk);
@@ -434,6 +436,7 @@ public static class NeighborhoodWorldBuilder
         WallNS("Bath_E", w, -1.7f, -2.6f, -1, 0, HIGH, inn);
         var bathDoor = Box("Bath_Door_Ajar", w, new Vector3(-2.5f, 1.0f, -1.25f), new Vector3(0.65f, 2.0f, 0.06f), MatWood());
         bathDoor.transform.rotation = Quaternion.Euler(0, -65, 0);
+        FixRotatedDoorCollider(bathDoor);
 
         // sqifa leg 1 (east-west from the front door); stair door in its south wall
         WallEW("Leg1_S_A", w, 4.3f, 4.9f, -2.8f, 0, HIGH, inn);
@@ -532,10 +535,12 @@ public static class NeighborhoodWorldBuilder
         Box("Wardrobe", bd, new Vector3(6.6f, 1.0f, 4.4f), new Vector3(0.6f, 2.0f, 1.2f), MatWood());
         var wdoor = Box("WardrobeDoor_Leaning", bd, new Vector3(6.2f, 0.95f, 5.3f), new Vector3(0.06f, 1.9f, 0.55f), MatWood());
         wdoor.transform.rotation = Quaternion.Euler(-10, 15, 0);
+        FixRotatedDoorCollider(wdoor);
         Box("Suitcase_OnTop", bd, new Vector3(6.6f, 2.25f, 4.4f), new Vector3(0.5f, 0.35f, 0.8f), MatCardboard());
         Box("WeddingChest", bd, new Vector3(4.6f, 0.3f, 6.1f), new Vector3(1.0f, 0.6f, 0.55f), MatWood());
         var lid = Box("ChestLid_Open", bd, new Vector3(4.6f, 0.68f, 5.9f), new Vector3(1.0f, 0.06f, 0.55f), MatWood());
         lid.transform.rotation = Quaternion.Euler(-25, 0, 0);
+        FixRotatedDoorCollider(lid);
         Box("Dresser", bd, new Vector3(3.0f, 0.5f, 7.6f), new Vector3(0.9f, 1.0f, 0.45f), MatWood());
         Box("Mirror_CrackedAtFaceHeight", bd, new Vector3(3.0f, 1.75f, 7.84f), new Vector3(0.5f, 0.7f, 0.04f), MatMirror());
         Box("Drawing_UnderBed", bd, new Vector3(5.0f, 0.06f, 7.3f), new Vector3(0.28f, 0.01f, 0.2f), MatPaleGhost());
@@ -549,9 +554,11 @@ public static class NeighborhoodWorldBuilder
         Box("DeadFridge", kt, new Vector3(-3.9f, 0.85f, -3.6f), new Vector3(0.7f, 1.7f, 0.7f), MatFridgeDead());
         var fdoor = Box("FridgeDoor_Leaning", kt, new Vector3(-4.6f, 0.8f, -3.85f), new Vector3(0.08f, 1.6f, 0.6f), MatFridgeDead());
         fdoor.transform.rotation = Quaternion.Euler(-8, 30, 0);
+        FixRotatedDoorCollider(fdoor);
         Box("WallCabinet", kt, new Vector3(-5.4f, 2.0f, -3.8f), new Vector3(0.8f, 0.6f, 0.35f), MatWood());
         var cdoor = Box("CabinetDoor_Ajar", kt, new Vector3(-5.0f, 2.0f, -3.6f), new Vector3(0.4f, 0.55f, 0.04f), MatWood());
         cdoor.transform.rotation = Quaternion.Euler(0, 40, 0);
+        FixRotatedDoorCollider(cdoor);
         for (int i = 0; i < 4; i++)
             Box("DishShard_" + i, kt, new Vector3(-6.7f + i * 0.12f, 0.07f, -1.3f - (i % 2) * 0.15f), new Vector3(0.12f, 0.04f, 0.1f), MatFridge());
         Cylinder("Can_A", kt, new Vector3(-6.2f, 0.11f, -1.5f), 0.05f, 0.12f, MatMetal());
@@ -960,6 +967,17 @@ public static class NeighborhoodWorldBuilder
 
     static GameObject Box(string name, GameObject parent, Vector3 localPos, Vector3 size, Material m)
         => Prim(PrimitiveType.Cube, name, parent, localPos, size, m);
+
+    // GameObject.CreatePrimitive adds an axis-aligned BoxCollider. After rotating a
+    // door or gate, that collider's world AABB grows and can block a doorway or
+    // corridor. Replace it with a convex MeshCollider so the collision volume
+    // matches the rotated visual mesh.
+    static void FixRotatedDoorCollider(GameObject door)
+    {
+        Object.DestroyImmediate(door.GetComponent<BoxCollider>());
+        var mc = door.AddComponent<MeshCollider>();
+        mc.convex = true;
+    }
 
     static GameObject Sphere(string name, GameObject parent, Vector3 localPos, Vector3 size, Material m)
         => Prim(PrimitiveType.Sphere, name, parent, localPos, size, m);
