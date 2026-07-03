@@ -75,10 +75,11 @@ public static class NeighborhoodWorldBuilder
         BuildRoadHouses();
         BuildShop();
         BuildSchool();
-        BuildAbandonedHouse();
+        PlayerController playerController = BuildPlayerStart();
+        PhoneController phone = playerController != null ? playerController.phone : null;
+        BuildAbandonedHouse(phone);
         BuildStreetLighting();
         BuildGlobalLightingAndSky();
-        BuildPlayerStart();
 
         AssetDatabase.SaveAssets();
         EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), ScenePath);
@@ -308,7 +309,7 @@ public static class NeighborhoodWorldBuilder
 
     const float LOW = 2.9f, HIGH = 3.5f, LOWTOP = 3.1f, HIGHTOP = 3.7f;
 
-    static void BuildAbandonedHouse()
+    static void BuildAbandonedHouse(PhoneController phone)
     {
         var root = Group("_AbandonedHouse", null, new Vector3(-5, 0, -69.9f));
         AH_Forecourt(root);
@@ -319,6 +320,42 @@ public static class NeighborhoodWorldBuilder
         AH_Stairs(root);
         AH_UpperLevel(root);
         AH_LockedRoom(root);
+
+        // Prototype encounter setup
+        var encounterGO = new GameObject("_EncounterDirector");
+        encounterGO.transform.SetParent(root.transform, false);
+        var director = encounterGO.AddComponent<GameDirector>();
+        director.phone = phone;
+
+        var encounter = encounterGO.AddComponent<EncounterTrigger>();
+        director.encounter = encounter;
+
+        var spawnPoint = new GameObject("WomanSpawnPoint");
+        spawnPoint.transform.SetParent(encounterGO.transform, false);
+        spawnPoint.transform.localPosition = new Vector3(7.5f, 0f, -2.5f);
+        encounter.spawnPoint = spawnPoint.transform;
+
+        var womanPrefab = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        womanPrefab.name = "WomanInBlack_Placeholder";
+        DestroyImmediate(womanPrefab.GetComponent<CapsuleCollider>());
+        var womanRenderer = womanPrefab.GetComponent<Renderer>();
+        if (womanRenderer != null)
+            womanRenderer.sharedMaterial = MatVoid();
+        womanPrefab.SetActive(false);
+        encounter.womanInBlackPrefab = womanPrefab;
+
+        // audio zone: exterior vs interior of the abandoned house
+        var audioZoneGO = new GameObject("AudioZone_AbandonedHouseInterior");
+        audioZoneGO.transform.SetParent(root.transform, false);
+        audioZoneGO.transform.localPosition = new Vector3(0f, 0f, 0f);
+        var zoneCollider = audioZoneGO.AddComponent<BoxCollider>();
+        zoneCollider.isTrigger = true;
+        zoneCollider.size = new Vector3(16f, 6f, 18f);
+        var zone = audioZoneGO.AddComponent<AudioZone>();
+        var zoneSource = audioZoneGO.AddComponent<AudioSource>();
+        zoneSource.loop = true;
+        zoneSource.playOnAwake = false;
+        zone.ambienceSource = zoneSource;
     }
 
     static GameObject WallEW(string name, GameObject parent, float x1, float x2, float z, float yBase, float h, Material m)
@@ -495,6 +532,14 @@ public static class NeighborhoodWorldBuilder
         Box("Opening_Dark_S1", c, new Vector3(-1.4f, 4.0f, -0.86f), new Vector3(0.8f, 0.95f, 0.08f), MatVoid());
         Box("Opening_Dark_S2", c, new Vector3(0.6f, 4.0f, -0.86f), new Vector3(0.8f, 0.95f, 0.08f), MatVoid());
         Box("Opening_Dark_N", c, new Vector3(-0.6f, 3.35f, 3.36f), new Vector3(0.8f, 0.5f, 0.08f), MatVoid());
+
+        var ball = Sphere("Ball", c, new Vector3(-0.5f, 0.22f, 1.2f), new Vector3(0.35f, 0.35f, 0.35f), MatDoorLocked());
+        var pickup = ball.AddComponent<PickupInteractable>();
+        pickup.itemName = "Ball";
+        pickup.promptText = "Pick up ball";
+        DestroyImmediate(ball.GetComponent<SphereCollider>());
+        var ballCollider = ball.AddComponent<BoxCollider>();
+        ballCollider.size = new Vector3(0.35f, 0.35f, 0.35f);
     }
 
     static void AH_RoomProps(GameObject root)
@@ -790,9 +835,12 @@ public static class NeighborhoodWorldBuilder
 
     // -------------------------------------------------------------- player start
 
-    static void BuildPlayerStart() => CreatePlayerRig();
+    static PlayerController BuildPlayerStart()
+    {
+        return CreatePlayerRig();
+    }
 
-    static void CreatePlayerRig()
+    static PlayerController CreatePlayerRig()
     {
         // playable first-person rig on the family house doorstep, facing up the alley
         var player = new GameObject("Player");
@@ -820,22 +868,29 @@ public static class NeighborhoodWorldBuilder
         cam.AddComponent<AudioListener>();
 
         // warm hand light against the cold moon (F toggles it in play mode)
-        var torchGO = new GameObject("Flashlight");
-        torchGO.transform.SetParent(cam.transform);
-        torchGO.transform.localPosition = new Vector3(0.15f, -0.15f, 0.1f);
-        torchGO.transform.localRotation = Quaternion.identity;
-        var torch = torchGO.AddComponent<Light>();
-        torch.type = LightType.Spot;
-        torch.spotAngle = 62f;
-        torch.innerSpotAngle = 30f;
-        torch.range = 14f;
-        torch.intensity = 2.6f;
-        torch.color = Hex("#F2C98C");
-        torch.shadows = LightShadows.Soft;
+        var phoneGO = new GameObject("Phone");
+        phoneGO.transform.SetParent(player.transform, false);
+        phoneGO.transform.localPosition = new Vector3(0.25f, 1.45f, 0.35f);
+        var phoneLight = phoneGO.AddComponent<Light>();
+        phoneLight.type = LightType.Spot;
+        phoneLight.color = Hex("#F2C98C");
+        phoneLight.spotAngle = 55f;
+        phoneLight.range = 18f;
+        phoneLight.intensity = 1.6f;
+        phoneLight.shadows = LightShadows.Soft;
 
-        var pc = player.AddComponent<PlayerController>();
-        pc.cameraPivot = cam.transform;
-        pc.flashlight = torch;
+        var phone = player.AddComponent<PhoneController>();
+        phone.phoneLight = phoneLight;
+
+        var controller = player.AddComponent<PlayerController>();
+        controller.cameraPivot = cam.transform;
+        controller.phone = phone;
+
+        var interaction = player.AddComponent<InteractionController>();
+        interaction.interactionRange = 2.5f;
+        interaction.interactableLayers = LayerMask.GetMask("Default");
+
+        return controller;
     }
 
     // ============================================================ prefab helpers
