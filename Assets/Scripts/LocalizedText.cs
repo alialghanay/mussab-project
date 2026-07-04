@@ -15,12 +15,10 @@ public class LocalizedText : MonoBehaviour
 
     void OnEnable()
     {
-        if (LocalizationSwitcher.Instance == null)
-        {
-            LocalizationSwitcher.OnInstanceReady -= OnInstanceReady;
-            LocalizationSwitcher.OnInstanceReady += OnInstanceReady;
-        }
-        else
+        LocalizationSwitcher.OnInstanceReady -= OnInstanceReady;
+        LocalizationSwitcher.OnInstanceReady += OnInstanceReady;
+
+        if (LocalizationSwitcher.Instance != null)
         {
             LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
             LocalizationSwitcher.Instance.OnLanguageChanged += UpdateText;
@@ -53,8 +51,6 @@ public class LocalizedText : MonoBehaviour
     void UpdateText()
     {
         if (label == null || LocalizationSwitcher.Instance == null) return;
-
-        string text = LocalizationSwitcher.Instance.GetText(localizationKey);
-        label.text = text ?? $"[{localizationKey}]";
+        label.text = LocalizationSwitcher.Instance.GetText(localizationKey);
     }
 }

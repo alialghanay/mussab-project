@@ -36,7 +36,10 @@ public class LocalizationSwitcher : MonoBehaviour
     void OnDestroy()
     {
         if (Instance == this)
+        {
             Instance = null;
+            OnInstanceReady = null;
+        }
     }
 
     public void SetLanguage(string language)
@@ -50,6 +53,8 @@ public class LocalizationSwitcher : MonoBehaviour
 
     public string GetText(string key)
     {
+        if (entries == null) return $"[{key}]";
+
         foreach (var entry in entries)
         {
             if (entry == null) continue;
