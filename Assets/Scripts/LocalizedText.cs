@@ -46,7 +46,9 @@ public class LocalizedText : MonoBehaviour
     {
         if (label == null || LocalizationSwitcher.Instance == null) return;
         string text = LocalizationSwitcher.Instance.GetText(localizationKey);
-        if (LocalizationSwitcher.Instance.CurrentLanguage == "ar")
+        bool isArabic = LocalizationSwitcher.Instance.CurrentLanguage == "ar";
+        label.isRightToLeft = isArabic;
+        if (isArabic)
             text = ArabicFixer.Fix(text);
         label.text = text;
     }
