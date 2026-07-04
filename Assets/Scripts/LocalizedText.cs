@@ -45,6 +45,9 @@ public class LocalizedText : MonoBehaviour
     void UpdateText()
     {
         if (label == null || LocalizationSwitcher.Instance == null) return;
-        label.text = LocalizationSwitcher.Instance.GetText(localizationKey);
+        string text = LocalizationSwitcher.Instance.GetText(localizationKey);
+        if (LocalizationSwitcher.Instance.CurrentLanguage == "ar")
+            text = ArabicFixer.Fix(text);
+        label.text = text;
     }
 }
