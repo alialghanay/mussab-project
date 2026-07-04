@@ -1200,7 +1200,6 @@ GameObject:
   - component: {fileID: 937704220}
   - component: {fileID: 937704219}
   - component: {fileID: 937704218}
-  - component: {fileID: 937704217}
   m_Layer: 0
   m_Name: MainMenuDirector
   m_TagString: Untagged
@@ -1208,34 +1207,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &937704217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 937704216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7195595c64e4340911032e792b75187, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizationSwitcher
-  entries:
-  - key: start
-    english: Start Demo
-    arabic: "\u0628\u062F\u0621 \u0627\u0644\u062A\u062C\u0631\u0628\u0629"
-  - key: continue
-    english: Continue
-    arabic: "\u0627\u0633\u062A\u0645\u0631\u0627\u0631"
-  - key: settings
-    english: Settings
-    arabic: "\u0627\u0644\u0625\u0639\u062F\u0627\u062F\u0627\u062A"
-  - key: quit
-    english: Quit
-    arabic: "\u062E\u0631\u0648\u062C"
-  - key: language
-    english: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629"
-    arabic: English
 --- !u!114 &937704218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3000,7 +2971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d870c9c9498a48a38c62bd6d6cc1b5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  localizationKey: quit
+  localizationKey: close
 --- !u!114 &2066208722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3101,6 +3072,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2066208719}
   m_CullTransparentMesh: 1
+--- !u!1 &2100000000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100000001}
+  - component: {fileID: 2100000002}
+  m_Layer: 0
+  m_Name: LocalizationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100000001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100000000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2100000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7195595c64e4340911032e792b75187, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizationSwitcher
+  entries:
+  - key: start
+    english: Start Demo
+    arabic: "\u0628\u062F\u0621 \u0627\u0644\u062A\u062C\u0631\u0628\u0629"
+  - key: continue
+    english: Continue
+    arabic: "\u0627\u0633\u062A\u0645\u0631\u0627\u0631"
+  - key: settings
+    english: Settings
+    arabic: "\u0627\u0644\u0625\u0639\u062F\u0627\u062F\u0627\u062A"
+  - key: quit
+    english: Quit
+    arabic: "\u062E\u0631\u0648\u062C"
+  - key: language
+    english: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629"
+    arabic: English
+  - key: volume
+    english: Master Volume
+    arabic: "\u0627\u0644\u0635\u0648\u062A \u0627\u0644\u0631\u0626\u064A\u0633\u064A"
+  - key: close
+    english: Close
+    arabic: "\u0625\u063A\u0644\u0627\u0642"
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3109,3 +3146,4 @@ SceneRoots:
   - {fileID: 2019254732}
   - {fileID: 937704220}
   - {fileID: 1289661839}
+  - {fileID: 2100000001}
