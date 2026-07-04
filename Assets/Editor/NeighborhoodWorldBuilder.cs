@@ -3,6 +3,9 @@
 // the expanded courtyard-house design in Docs/AbandonedHouseDesign.md.
 // Runs automatically once (if Assets/Scenes/Neighborhood.unity does not exist)
 // or on demand via Tools > Neighborhood > Build World.
+// NOTE: When creating a new scene (e.g., MainMenu), add it to
+// ProjectSettings/EditorBuildSettings.asset via File > Build Settings
+// so SceneLoader can load it at runtime.
 
 using UnityEditor;
 using UnityEditor.SceneManagement;
