@@ -3,20 +3,13 @@ using UnityEngine.InputSystem;
 
 public class MainMenuController : MonoBehaviour
 {
-    [Header("Scene Names")]
+    [Header("Scene")]
     public string demoSceneName = "Neighborhood";
 
     [Header("UI Panels")]
     public SettingsPanel settingsPanel;
 
-    [Header("Localized Buttons")]
-    public LocalizedText startButtonText;
-    public LocalizedText continueButtonText;
-    public LocalizedText settingsButtonText;
-    public LocalizedText quitButtonText;
-    public LocalizedText languageButtonText;
-
-    void Update()
+    private void Update()
     {
         var kb = Keyboard.current;
         if (kb == null) return;
