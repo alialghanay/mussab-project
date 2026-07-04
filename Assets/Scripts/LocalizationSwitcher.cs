@@ -29,6 +29,7 @@ public class LocalizationSwitcher : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        OnLanguageChanged?.Invoke();
     }
 
     void OnDestroy()
