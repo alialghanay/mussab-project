@@ -25,7 +25,10 @@ public static class MainMenuWireUp
 
         // assign settings panel to menu if missing
         if (menu.settingsPanel == null && settingsPanel != null)
+        {
             menu.settingsPanel = settingsPanel;
+            EditorUtility.SetDirty(menu);
+        }
 
         // assign font asset
         TMP_FontAsset fontAsset = Resources.GetBuiltinResource<TMP_FontAsset>("LegacyRuntime.ttf");
@@ -34,6 +37,11 @@ public static class MainMenuWireUp
             var guids = AssetDatabase.FindAssets("t:TMP_FontAsset");
             if (guids.Length > 0)
                 fontAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(AssetDatabase.GUIDToAssetPath(guids[0]));
+        }
+
+        if (fontAsset == null)
+        {
+            Debug.LogWarning("[MainMenuWireUp] No TMP_FontAsset found in project. Text will not render until a font is assigned.");
         }
 
         foreach (var tmp in Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsSortMode.None))
@@ -103,6 +111,7 @@ public static class MainMenuWireUp
             }
         }
 
+        EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
         AssetDatabase.SaveAssets();
         Debug.Log("[MainMenuWireUp] MainMenu scene wired up.");
