@@ -9,6 +9,13 @@ public class MainMenuController : MonoBehaviour
     [Header("UI Panels")]
     public SettingsPanel settingsPanel;
 
+    [Header("Button Labels")]
+    public LocalizedText startButtonText;
+    public LocalizedText continueButtonText;
+    public LocalizedText settingsButtonText;
+    public LocalizedText quitButtonText;
+    public LocalizedText languageButtonText;
+
     private void Update()
     {
         var kb = Keyboard.current;
