@@ -7,6 +7,7 @@ public class LocalizedText : MonoBehaviour
     public string localizationKey;
 
     TextMeshProUGUI label;
+    LocalizationSwitcher lastInstance;
 
     void Awake()
     {
@@ -16,23 +17,29 @@ public class LocalizedText : MonoBehaviour
     void OnEnable()
     {
         LocalizationSwitcher.OnInstanceReady += OnInstanceReady;
-        if (LocalizationSwitcher.Instance != null)
-            LocalizationSwitcher.Instance.OnLanguageChanged += UpdateText;
+        SubscribeTo(LocalizationSwitcher.Instance);
         UpdateText();
     }
 
     void OnDisable()
     {
         LocalizationSwitcher.OnInstanceReady -= OnInstanceReady;
-        if (LocalizationSwitcher.Instance != null)
-            LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
+        SubscribeTo(null);
     }
 
     void OnInstanceReady()
     {
-        if (LocalizationSwitcher.Instance != null)
-            LocalizationSwitcher.Instance.OnLanguageChanged += UpdateText;
+        SubscribeTo(LocalizationSwitcher.Instance);
         UpdateText();
+    }
+
+    void SubscribeTo(LocalizationSwitcher instance)
+    {
+        if (lastInstance != null)
+            lastInstance.OnLanguageChanged -= UpdateText;
+        lastInstance = instance;
+        if (lastInstance != null)
+            lastInstance.OnLanguageChanged += UpdateText;
     }
 
     void UpdateText()

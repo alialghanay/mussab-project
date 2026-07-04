@@ -38,7 +38,6 @@ public class LocalizationSwitcher : MonoBehaviour
         if (Instance == this)
         {
             Instance = null;
-            OnInstanceReady = null;
         }
     }
 
