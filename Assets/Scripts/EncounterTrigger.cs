@@ -21,6 +21,7 @@ public class EncounterTrigger : MonoBehaviour
         if (mainCamera == null) return;
 
         spawned = Instantiate(womanInBlackPrefab, spawnPoint.position, spawnPoint.rotation);
+        spawned.SetActive(true);
         player = mainCamera.transform;
         activeEncounter = true;
         timer = maxDurationSeconds;
