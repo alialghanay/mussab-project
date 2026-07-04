@@ -6,7 +6,7 @@ public class SettingsPanel : MonoBehaviour
     public GameObject panelRoot;
     public Slider volumeSlider;
 
-    void Start()
+    private void Start()
     {
         if (panelRoot != null)
             panelRoot.SetActive(false);
@@ -16,6 +16,12 @@ public class SettingsPanel : MonoBehaviour
             volumeSlider.value = AudioListener.volume;
             volumeSlider.onValueChanged.AddListener(SetVolume);
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (volumeSlider != null)
+            volumeSlider.onValueChanged.RemoveListener(SetVolume);
     }
 
     public void Toggle()
@@ -36,7 +42,7 @@ public class SettingsPanel : MonoBehaviour
             panelRoot.SetActive(false);
     }
 
-    void SetVolume(float value)
+    private void SetVolume(float value)
     {
         AudioListener.volume = Mathf.Clamp01(value);
     }
