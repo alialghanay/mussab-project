@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class LocalizationSwitcher : MonoBehaviour
 {
     public static LocalizationSwitcher Instance { get; private set; }
@@ -30,9 +31,17 @@ public class LocalizationSwitcher : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+
     public void SetLanguage(string language)
     {
         if (language != "en" && language != "ar") return;
+        if (language == CurrentLanguage) return;
+
         CurrentLanguage = language;
         OnLanguageChanged?.Invoke();
     }
@@ -41,6 +50,7 @@ public class LocalizationSwitcher : MonoBehaviour
     {
         foreach (var entry in entries)
         {
+            if (entry == null) continue;
             if (entry.key == key)
                 return CurrentLanguage == "ar" ? entry.arabic : entry.english;
         }
