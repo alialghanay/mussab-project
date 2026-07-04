@@ -11,7 +11,7 @@ public static class SceneLoader
             return;
         }
 
-        if (SceneUtility.GetBuildSceneByPath("Assets/Scenes/" + sceneName + ".unity") < 0)
+        if (SceneUtility.GetBuildIndexByScenePath($"Assets/Scenes/{sceneName}.unity") < 0)
         {
             Debug.LogError($"[SceneLoader] '{sceneName}' is not in Build Settings. Add it via File > Build Settings.");
             return;
