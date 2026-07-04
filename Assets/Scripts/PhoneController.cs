@@ -8,6 +8,7 @@ public class PhoneController : MonoBehaviour
 
     [Header("UI")]
     public GameObject phoneScreen;
+    public TMPro.TextMeshProUGUI timeText;
     public float messageDisplaySeconds = 4f;
 
     [Header("Audio")]
@@ -62,6 +63,9 @@ public class PhoneController : MonoBehaviour
 
     void Update()
     {
+        if (timeText != null)
+            timeText.text = System.DateTime.Now.ToString("HH:mm");
+
         if (messageTimer > 0f)
         {
             messageTimer -= Time.deltaTime;
