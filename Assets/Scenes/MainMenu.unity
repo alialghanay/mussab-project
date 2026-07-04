@@ -1250,11 +1250,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   demoSceneName: Neighborhood
   settingsPanel: {fileID: 846974168}
-  startButtonText: {fileID: 1978839486}
-  continueButtonText: {fileID: 1000438952}
-  settingsButtonText: {fileID: 484732171}
-  quitButtonText: {fileID: 1862213510}
-  languageButtonText: {fileID: 232944325}
 --- !u!81 &937704219
 AudioListener:
   m_ObjectHideFlags: 0

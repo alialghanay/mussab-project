@@ -15,36 +15,23 @@ public class LocalizedText : MonoBehaviour
 
     void OnEnable()
     {
-        LocalizationSwitcher.OnInstanceReady -= OnInstanceReady;
         LocalizationSwitcher.OnInstanceReady += OnInstanceReady;
-
         if (LocalizationSwitcher.Instance != null)
-        {
-            LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
             LocalizationSwitcher.Instance.OnLanguageChanged += UpdateText;
-        }
-
         UpdateText();
     }
 
     void OnDisable()
     {
         LocalizationSwitcher.OnInstanceReady -= OnInstanceReady;
-
         if (LocalizationSwitcher.Instance != null)
             LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
     }
 
     void OnInstanceReady()
     {
-        LocalizationSwitcher.OnInstanceReady -= OnInstanceReady;
-
         if (LocalizationSwitcher.Instance != null)
-        {
-            LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
             LocalizationSwitcher.Instance.OnLanguageChanged += UpdateText;
-        }
-
         UpdateText();
     }
 
