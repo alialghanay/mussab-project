@@ -5,6 +5,7 @@ using UnityEngine;
 public class LocalizationSwitcher : MonoBehaviour
 {
     public static LocalizationSwitcher Instance { get; private set; }
+    public static event Action OnInstanceReady;
 
     public string CurrentLanguage { get; private set; } = "en";
     public event Action OnLanguageChanged;
@@ -29,7 +30,7 @@ public class LocalizationSwitcher : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        OnLanguageChanged?.Invoke();
+        OnInstanceReady?.Invoke();
     }
 
     void OnDestroy()

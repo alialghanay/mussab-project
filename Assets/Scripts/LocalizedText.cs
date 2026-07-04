@@ -13,34 +13,41 @@ public class LocalizedText : MonoBehaviour
         label = GetComponent<TextMeshProUGUI>();
     }
 
-    void Start()
-    {
-        Subscribe();
-        UpdateText();
-    }
-
     void OnEnable()
     {
-        Subscribe();
+        if (LocalizationSwitcher.Instance == null)
+        {
+            LocalizationSwitcher.OnInstanceReady -= OnInstanceReady;
+            LocalizationSwitcher.OnInstanceReady += OnInstanceReady;
+        }
+        else
+        {
+            LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
+            LocalizationSwitcher.Instance.OnLanguageChanged += UpdateText;
+        }
+
         UpdateText();
     }
 
     void OnDisable()
     {
-        Unsubscribe();
+        LocalizationSwitcher.OnInstanceReady -= OnInstanceReady;
+
+        if (LocalizationSwitcher.Instance != null)
+            LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
     }
 
-    void Subscribe()
+    void OnInstanceReady()
     {
-        if (LocalizationSwitcher.Instance == null) return;
-        LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
-        LocalizationSwitcher.Instance.OnLanguageChanged += UpdateText;
-    }
+        LocalizationSwitcher.OnInstanceReady -= OnInstanceReady;
 
-    void Unsubscribe()
-    {
-        if (LocalizationSwitcher.Instance == null) return;
-        LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
+        if (LocalizationSwitcher.Instance != null)
+        {
+            LocalizationSwitcher.Instance.OnLanguageChanged -= UpdateText;
+            LocalizationSwitcher.Instance.OnLanguageChanged += UpdateText;
+        }
+
+        UpdateText();
     }
 
     void UpdateText()
