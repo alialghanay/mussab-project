@@ -338,7 +338,7 @@ public static class NeighborhoodWorldBuilder
 
         var womanPrefab = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         womanPrefab.name = "WomanInBlack_Placeholder";
-        DestroyImmediate(womanPrefab.GetComponent<CapsuleCollider>());
+        Object.DestroyImmediate(womanPrefab.GetComponent<CapsuleCollider>());
         var womanRenderer = womanPrefab.GetComponent<Renderer>();
         if (womanRenderer != null)
             womanRenderer.sharedMaterial = MatVoid();
@@ -538,7 +538,7 @@ public static class NeighborhoodWorldBuilder
         var pickup = ball.AddComponent<PickupInteractable>();
         pickup.itemName = "Ball";
         pickup.promptText = "Pick up ball";
-        DestroyImmediate(ball.GetComponent<SphereCollider>());
+        Object.DestroyImmediate(ball.GetComponent<SphereCollider>());
         var ballCollider = ball.AddComponent<BoxCollider>();
         ballCollider.size = new Vector3(0.35f, 0.35f, 0.35f);
         return pickup;
