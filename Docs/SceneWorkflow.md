@@ -33,3 +33,14 @@ This document describes how to add new scenes to the project and wire them into 
 2. Press Play.
 3. Click the button that loads the new scene.
 4. Check the Console for `SceneLoader` errors if the scene is missing from Build Settings.
+
+## Manual smoke test
+
+Use these steps to verify the main menu in Play mode after wiring changes:
+
+1. Open `Assets/Scenes/MainMenu.unity` and press **Play**.
+2. Verify the title and five buttons are visible.
+3. Click **Start Demo** and confirm `Neighborhood` loads.
+4. Click **Language** and verify button texts switch to Arabic.
+5. Click **Settings**, move the volume slider, and confirm no errors appear in the Console.
+6. Click **Quit** and confirm the Console logs `"Quit requested"`.
